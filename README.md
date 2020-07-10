@@ -1,3 +1,3 @@
-# README
+# Gym API
 
 A gym management Rails API.
