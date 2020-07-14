@@ -1,6 +1,6 @@
 class V1::ExercisesController < ApplicationController
 
-  before_action :set_exercise, only: %i[update destroy]
+  before_action :set_exercise, only: %i[show update destroy]
 
   def index
     @exercises = Exercise.all
@@ -18,9 +18,13 @@ class V1::ExercisesController < ApplicationController
     end
   end
 
+  def show
+    render json: @exercise, status: :ok
+  end
+
   def update
     if @exercise.update(exercise_params)
-      render json: @exercise, status: :updated
+      render json: @exercise, status: :ok
     else
       head(:unprocessable_entity)
     end
@@ -37,10 +41,10 @@ class V1::ExercisesController < ApplicationController
   private
 
   def set_exercise
-    @exercise = params[:id]
+    @exercise = Exercise.find_by(id: params[:id])
   end
 
   def exercise_params
-    params.require(:exercise).permit(:name, :calories, :date, :duration, :image)
+    params.require(:exercise).permit(:id, :name, :calories, :date, :duration, :image)
   end
 end
