@@ -3,7 +3,6 @@ class CreateExercises < ActiveRecord::Migration[6.0]
     create_table :exercises do |t|
       t.string :name
       t.integer :calories
-      t.datetime :date
       t.integer :duration
 
       t.timestamps
