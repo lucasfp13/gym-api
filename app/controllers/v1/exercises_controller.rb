@@ -5,28 +5,28 @@ class V1::ExercisesController < ApplicationController
   def index
     @exercises = Exercise.all
 
-    render json: @exercises, status: :ok
+    render json: ExerciseSerializer.new(@exercises).serialized_json, status: :ok
   end
 
   def create
     @exercise = Exercise.new(exercise_params)
 
     if @exercise.save
-      render json: @exercise, status: :created
+      render json: ExerciseSerializer.new(@exercise).serialized_json, status: :created
     else
-      head(:unprocessable_entity)
+      render json: { errors: @exercise.errors.full_messages }, status: 422
     end
   end
 
   def show
-    render json: @exercise, status: :ok
+    render json: ExerciseSerializer.new(@exercise).serialized_json, status: :ok
   end
 
   def update
     if @exercise.update(exercise_params)
-      render json: @exercise, status: :ok
+      render json: ExerciseSerializer.new(@exercise).serialized_json, status: :ok
     else
-      head(:unprocessable_entity)
+      render json: { errors: @exercise.errors.full_messages }, status: 422
     end
   end
 
@@ -34,7 +34,7 @@ class V1::ExercisesController < ApplicationController
     if @exercise.destroy
       head(:ok)
     else
-      head(:unprocessable_entity)
+      render json: { errors: @exercise.errors.full_messages }, status: 422
     end
   end
 
